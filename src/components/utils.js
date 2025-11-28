@@ -9,7 +9,7 @@ export default async function login(email, password) {
 
     let data = await res.json();
 
-    return [data.access_token, data.refresh_roken];
+    return data;
 }
 
 export default async function getProducts(access_token) {
