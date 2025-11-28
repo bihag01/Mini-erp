@@ -8,7 +8,7 @@ export default function Products() {
     const [products, setProducts] = useState([]);
     const [editId, setEditId] = useState(null);
     const [tokens, setTokens] = useLocalStorage("miniERPTokens");
-    
+
     async function fetchProducts() {
             let data = await getProducts(tokens?.accessToken);
             let array = data.results;
