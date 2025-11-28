@@ -17,7 +17,6 @@ export default function Products() {
         }
     
     useEffect(() => {
-        
         fetchProducts();
     }, []);
 
@@ -27,10 +26,8 @@ export default function Products() {
                 let data = await deleteProducts(tokens?.accessToken, productId);
                 let array = data.results;
                 
-                setProducts(array);
             }
             fetchProducts();
-            deleteProducts
         }
     }
 

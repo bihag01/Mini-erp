@@ -7,9 +7,14 @@ export async function login(email, password) {
         body: JSON.stringify({email: email, password: password})
     });
 
-    let data = await res.json();
-
-    return data;
+    if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw {
+            status: res.status,
+            message: errorData.message || "Error al iniciar sesion"
+        };
+    }
+    return await res.json();
 }
 
 export async function getProducts(access_token) {
