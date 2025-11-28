@@ -1,10 +1,10 @@
+import { Outlet } from "react-router-dom";
 
-
-export default function AuthLayout({children}) {
+export default function AuthLayout() {
 
     return (
         <div>
-            {children}
+            <Outlet />
         </div>
     )
 }
