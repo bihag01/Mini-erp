@@ -1,6 +1,6 @@
 const BASE_URL = "https://minierp.rbnetto.dev";
 
-export default async function login(email, password) {
+export async function login(email, password) {
     let res = await fetch(`${BASE_URL}/api/users/users/login/`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -12,7 +12,7 @@ export default async function login(email, password) {
     return data;
 }
 
-export default async function getProducts(access_token) {
+export async function getProducts(access_token) {
     let res = await fetch(`${BASE_URL}/api/products`, {
         method: 'GET',
         headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`}
@@ -23,7 +23,7 @@ export default async function getProducts(access_token) {
     return data;
 }
 
-export default async function deleteProducts(access_token, prodId){
+export async function deleteProducts(access_token, prodId){
     let res = await fetch(`${BASE_URL}/api/products/${prodId}`, {
         method: 'DELETE',
         headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`}
@@ -34,7 +34,7 @@ export default async function deleteProducts(access_token, prodId){
     return data;
 }
 
-export default async function postProducts(access_token, prod){
+export async function postProducts(access_token, prod){
     let res = await fetch(`${BASE_URL}/api/products`, {
         method: 'POST',
         headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`},
@@ -46,9 +46,9 @@ export default async function postProducts(access_token, prod){
     return data;
 }
 
-export default async function putProducts(access_token, prodId, prod){
+export async function putProducts(access_token, prodId, prod){
     let res = await fetch(`${BASE_URL}/api/products/${prodId}`, {
-        method: 'DELETE',
+        method: 'PUT',
         headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`},
         body: JSON.stringify(prod)
     });
