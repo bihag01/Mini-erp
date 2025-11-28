@@ -39,7 +39,8 @@ export default function Products() {
     // READY
     async function createProd(productId, newProd) {
         try{
-            await postProducts(tokens?.accessToken, newProd);
+            let data = await postProducts(tokens?.accessToken, newProd);
+            console.log(data)
 
         }catch(e){
             console.error("ERROR AL POST:", e);

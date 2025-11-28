@@ -14,11 +14,11 @@ export default function Productcard({onConfirm,onCancel,data}) {
             name: name,
             description: description,
             category_id: parseInt(category),
-            price: price.toString(),
+            price: parseFloat(price),
             stock_quantity: parseInt(stockQuantity)
         }
         let id = data?.id || 0;
-        console.log(JSON.stringify(productData));
+        
         onConfirm(parseInt(id), productData);
     }
     
