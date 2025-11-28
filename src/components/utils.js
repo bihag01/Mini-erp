@@ -13,7 +13,7 @@ export async function login(email, password) {
 }
 
 export async function getProducts(access_token) {
-    let res = await fetch(`${BASE_URL}/api/products`, {
+    let res = await fetch(`${BASE_URL}/api/inventory/products`, {
         method: 'GET',
         headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`}
     });
@@ -24,7 +24,7 @@ export async function getProducts(access_token) {
 }
 
 export async function deleteProducts(access_token, prodId){
-    let res = await fetch(`${BASE_URL}/api/products/${prodId}`, {
+    let res = await fetch(`${BASE_URL}/api/inventory/products/${prodId}`, {
         method: 'DELETE',
         headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`}
     });
@@ -35,7 +35,7 @@ export async function deleteProducts(access_token, prodId){
 }
 
 export async function postProducts(access_token, prod){
-    let res = await fetch(`${BASE_URL}/api/products`, {
+    let res = await fetch(`${BASE_URL}/api/inventory/products`, {
         method: 'POST',
         headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`},
         body: JSON.stringify(prod)
@@ -47,7 +47,7 @@ export async function postProducts(access_token, prod){
 }
 
 export async function putProducts(access_token, prodId, prod){
-    let res = await fetch(`${BASE_URL}/api/products/${prodId}`, {
+    let res = await fetch(`${BASE_URL}/api/inventory/products/${prodId}`, {
         method: 'PUT',
         headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`},
         body: JSON.stringify(prod)
