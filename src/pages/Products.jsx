@@ -20,7 +20,8 @@ export default function Products() {
             
             setProducts(array);
         }catch(e){
-            alert(e);
+            console.error("ERROR AL FETCH:", e);
+            alert(`${e.status}: ${e.message}`);
         }
     }
     
@@ -30,7 +31,8 @@ export default function Products() {
             await deleteProducts(tokens?.accessToken, productId);
 
         }catch(e){
-            alert(e);
+            console.error("ERROR AL DELETE:", e);
+            alert(`${e.status}: ${e.message}`);
         }
     }
 
@@ -40,7 +42,8 @@ export default function Products() {
             await postProducts(tokens?.accessToken, newProd);
 
         }catch(e){
-            alert(e);
+            console.error("ERROR AL POST:", e);
+            alert(`${e.status}: ${e.message}`);
         }
 
         await fetchProducts();
@@ -53,7 +56,8 @@ export default function Products() {
             await putProducts(tokens?.accessToken, productId, newProd);
 
         }catch(e){
-            alert(e);
+            console.error("ERROR AL PUT:", e);
+            alert(`${e.status}: ${e.message}`);
         }
     }
     
