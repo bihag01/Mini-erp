@@ -23,9 +23,14 @@ export async function getProducts(access_token) {
         headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`}
     });
 
-    let data = await res.json();
-
-    return data;
+    if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw {
+            status: res.status,
+            message: errorData.message || "Error al obtener products"
+        };
+    }
+    return await res.json();
 }
 
 export async function deleteProducts(access_token, prodId){
@@ -34,9 +39,13 @@ export async function deleteProducts(access_token, prodId){
         headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`}
     });
 
-    let data = await res.json();
-
-    return data;
+    if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw {
+            status: res.status,
+            message: errorData.message || "Error al borrar el product"
+        };
+    }
 }
 
 export async function postProducts(access_token, prod){
@@ -46,9 +55,14 @@ export async function postProducts(access_token, prod){
         body: JSON.stringify(prod)
     });
 
-    let data = await res.json();
-
-    return data;
+    if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw {
+            status: res.status,
+            message: errorData.message || "Error al crear el product"
+        };
+    }
+    return await res.json();
 }
 
 export async function putProducts(access_token, prodId, prod){
@@ -58,7 +72,12 @@ export async function putProducts(access_token, prodId, prod){
         body: JSON.stringify(prod)
     });
 
-    let data = await res.json();
-
-    return data;
+    if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw {
+            status: res.status,
+            message: errorData.message || "Error al editar el product"
+        };
+    }
+    return await res.json();
 }

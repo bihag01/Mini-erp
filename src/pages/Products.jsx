@@ -1,56 +1,146 @@
 
-import { getProducts } from "../components/utils";
+import { getProducts, deleteProducts, putProducts, postProducts } from "../components/utils";
 import { useLocalStorage } from "../components/useLocalStorage";
 import { useState, useEffect } from "react";
 import TableProducts from "../components/TableProducts";
+import Productcard from "../components/Productcard";
 
 export default function Products() {
     const [products, setProducts] = useState([]);
-    const [editId, setEditId] = useState(null);
+    const [editId, setEditId] = useState(null);             // id del producto a editar? (null | Number)
+    const [editingProd, setEditingProd] = useState(null);   // producto a editar
+    const [newProduct, setNewProduct] = useState(false);    // Se creara un nuevo producto?
     const [tokens, setTokens] = useLocalStorage("miniERPTokens");
 
+    // READY
     async function fetchProducts() {
+        try{
             let data = await getProducts(tokens?.accessToken);
             let array = data.results;
             
             setProducts(array);
+        }catch(e){
+            alert(e);
         }
+    }
+    
+    // READY
+    async function deleteProd(productId) {
+        try{
+            await deleteProducts(tokens?.accessToken, productId);
+
+        }catch(e){
+            alert(e);
+        }
+    }
+
+    // READY
+    async function createProd(productId, newProd) {
+        try{
+            await postProducts(tokens?.accessToken, newProd);
+
+        }catch(e){
+            alert(e);
+        }
+
+        await fetchProducts();
+        setNewProduct(false);
+    }
+
+    // READY
+    async function updateProd(productId, newProd) {
+        try{
+            await putProducts(tokens?.accessToken, productId, newProd);
+
+        }catch(e){
+            alert(e);
+        }
+    }
     
     useEffect(() => {
         fetchProducts();
     }, []);
 
-    function handleDelete(productId) {
+    async function handleDelete(productId) {
         if(confirm("Are you sure you want to delete this item?")) {
-            async function fetchProducts() {
-                let data = await deleteProducts(tokens?.accessToken, productId);
-                let array = data.results;
-                
-            }
-            fetchProducts();
+            await deleteProd(productId);
+            await fetchProducts();
         }
+    }
+    
+    // function que llama onConfirm del component ProductCard
+    async function handleUpdate(productId, newProd) {
+        await updateProd(productId, newProd);
+        await fetchProducts();
+        setEditId(null);
+    }
+
+    // funcion que llama el boton edit de un row
+    function onEdit(productId) {
+        let prod = products.find(prod => prod.id === productId);
+        if (!prod) return;
+
+        let updProd = {
+            id: prod.id,
+            name: prod.name,
+            description: prod.description,
+            category: prod.category?.id,
+            price: prod.price,
+            stock_quantity: prod.stock_quantity
+        };
+        setEditingProd(updProd);
+        setEditId(productId);
     }
 
     return (
         <div className="h-full w-full flex flex-col justify-center items-center">
-            {editId ?
-               (<div>g</div>)
-               :
-               (<>
-               <div className="flex w-[70%] h-[5%] justify-start gap-[10px]">
-                    <button
-                        onClick={() => { } }
-                        className="px-[10px] cursor-pointer hover:bg-[#3da9fc]/30 h-[80%] border-[3px] border-[#1f2937] rounded-md">
-                        Refresh
-                    </button>
-                    <button
-                        onClick={() => { } }
-                        className="px-[10px] cursor-pointer hover:bg-[#3da9fc]/30 h-[80%] border-[3px] border-[#1f2937] rounded-md">
-                        New Product
-                    </button>
-                </div>
-                <TableProducts products={products} />
-                </>)
+            {newProduct?
+                // newProduct === true
+                (
+                    <>
+                        <Productcard
+                            onConfirm={createProd}
+                            onCancel={ () => setNewProduct(false) }
+                        />
+                    </>
+                )
+                :
+                // newProduct === false
+                (editId != null ?
+                    // editId === null
+                    (
+                        <>
+                            <div>{editId}</div>
+                            <Productcard
+                                onConfirm={handleUpdate}
+                                onCancel={ () => setEditId(null) }
+                                data={editingProd}
+                            />
+                        </>
+                    )
+                    
+                    :
+
+                    // editId === Number
+                    (
+                        <>
+                            <div className="flex w-[70%] h-[5%] justify-start gap-[10px]">
+                                <button
+                                    onClick={fetchProducts}
+                                    className="px-[10px] cursor-pointer hover:bg-[#3da9fc]/30 h-[80%] border-[3px] border-[#1f2937] rounded-md">
+                                    Refresh
+                                </button>
+                                <button
+                                    onClick={() => setNewProduct(true)}
+                                    className="px-[10px] cursor-pointer hover:bg-[#3da9fc]/30 h-[80%] border-[3px] border-[#1f2937] rounded-md">
+                                    New Product
+                                </button>
+                            </div>
+                            <TableProducts products={products} onEdit={onEdit} onDelete={handleDelete}/>
+                        </>
+                    )
+                )
+            
             }
             
         </div>
