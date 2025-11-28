@@ -1,0 +1,59 @@
+const BASE_URL = "https://minierp.rbnetto.dev";
+
+export default async function login(email, password) {
+    let res = await fetch(`${BASE_URL}/api/users/users/login/`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({email: email, password: password})
+    });
+
+    let data = await res.json();
+
+    return [data.access_token, data.refresh_roken];
+}
+
+export default async function getProducts(access_token) {
+    let res = await fetch(`${BASE_URL}/api/products`, {
+        method: 'GET',
+        headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`}
+    });
+
+    let data = await res.json();
+
+    return data;
+}
+
+export default async function deleteProducts(access_token, prodId){
+    let res = await fetch(`${BASE_URL}/api/products/${prodId}`, {
+        method: 'DELETE',
+        headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`}
+    });
+
+    let data = await res.json();
+
+    return data;
+}
+
+export default async function postProducts(access_token, prod){
+    let res = await fetch(`${BASE_URL}/api/products`, {
+        method: 'POST',
+        headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`},
+        body: JSON.stringify(prod)
+    });
+
+    let data = await res.json();
+
+    return data;
+}
+
+export default async function putProducts(access_token, prodId, prod){
+    let res = await fetch(`${BASE_URL}/api/products/${prodId}`, {
+        method: 'DELETE',
+        headers: {"Content-Type": "application/json", 'Authorization': `Bearer ${access_token}`},
+        body: JSON.stringify(prod)
+    });
+
+    let data = await res.json();
+
+    return data;
+}
